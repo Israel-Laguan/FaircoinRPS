@@ -1,15 +1,14 @@
 {
   "main.css": "static/css/main.0829eff2.css",
   "main.css.map": "static/css/main.0829eff2.css.map",
-  "main.js": "static/js/main.cd9dc9f8.js",
-  "main.js.map": "static/js/main.cd9dc9f8.js.map",
+  "main.js": "static/js/main.2fd7652a.js",
+  "main.js.map": "static/js/main.2fd7652a.js.map",
   "static/media/loading.gif": "static/media/loading.58836d56.gif",
-  "static/media/match.png": "static/media/match.b8d646f4.png",
+  "static/media/match.png": "static/media/match.056c85fc.png",
   "static/media/rock.png": "static/media/rock.2ac1b73a.png",
   "static/media/rps-paper.png": "static/media/rps-paper.373b0a72.png",
   "static/media/rps-rock.png": "static/media/rps-rock.b7011e13.png",
   "static/media/rps-scissors.png": "static/media/rps-scissors.ea61300d.png",
   "static/media/search.gif": "static/media/search.5ebdef8a.gif",
-  "static/media/title.png": "static/media/title.6280fbf0.png",
-  "static/media/title_low.png": "static/media/title_low.b2e655a0.png"
+  "static/media/title.png": "static/media/title.ab05c9b9.png"
 }
