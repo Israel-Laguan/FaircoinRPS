@@ -100,7 +100,7 @@ export default class Game extends React.Component {
                             onClick={this.handleClickOpenName}
                             style={{ width: "100vw" }}
                         >
-                            <AccountCircleIcon /> {(this.state.name==="")?"Change Your Nickname":"Wellcome "+this.state.name}
+                            <AccountCircleIcon /> {(this.state.name==="")?"Change your Nickname":"Wellcome "+this.state.name}
                         </Button>
                         <Dialog
                             open={this.state.openNameDialog}
