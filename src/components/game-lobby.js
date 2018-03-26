@@ -568,9 +568,14 @@ const PeerButton = styled.button`
     margin-right: auto;
     cursor:pointer;
     cursor:hand;
-    @media (max-width: 300px) {
-        padding: 0px;
-    }
+    
+    @media (max-width: 732px) {
+        height:35px;
+      }
+
+    @media (max-width: 576px) {
+        height:35px;
+      }
     ${props =>
         props.challenged &&
         css`
@@ -603,35 +608,41 @@ const ButtonSelection = styled.button`
 
 const DivE = styled.div`
     width: 100vh;
-    align-content: center;
-    text-align: center;
-
+    align-content:center;
+        text-align: center;
+    
     @media (max-width: 732px) {
         width: 100%;
-    }
-
+      }
+    
     @media (max-width: 576px) {
         width: 100%;
-    }
+      }
 `;
 
 const FondoEm = styled.div`
     background-image: url(${OnlinePeers});
-    height: 355px;
-    width: 100vh;
-    background-size: cover;
-
+    height:355px;
+    width:100vh;
+    background-size:cover;
+    
     @media (max-width: 732px) {
-        min-height: 200px;
-        width: auto;
-        background-size: cover;
+        height:auto;
+        width:auto;
+        background-size:cover;
+      }
+    
+    @media (min-width: 577px) {
+        min-height:200px;
+        width:auto;
+        background-size:cover;
     }
 
     @media (max-width: 576px) {
-        min-height: 200px;
-        width: auto;
-        background-size: cover;
-    }
+        min-height:200px;
+        width:auto;
+        background-size:cover;
+      }
 `;
 
 const Timer = styled.span`

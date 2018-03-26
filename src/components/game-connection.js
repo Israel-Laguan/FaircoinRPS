@@ -60,9 +60,17 @@ const TextPeer = TextConnection.extend`
 
 const TextPeers = TextConnection.extend`
     font-family: monospace, monospace;
+    font-size: 16px;
+    
     @media (max-width: 723px) {
-        font-size: 10px;
+        font-size: 13px;
+        font-family: monospace, monospace;
     }
+
+    @media (max-width: 576px) {
+        font-size: 13px;
+        font-family: monospace, monospace;
+      }
 `;
 
 const Center1 = styled.div`

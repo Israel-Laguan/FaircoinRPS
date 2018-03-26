@@ -171,13 +171,11 @@ const Footer = styled.div`
 const Div = styled.div`
     margin: 0 auto;
     width: 50%;
-    background-color: #8fa690;
+    background-color: transparent;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    min-height: 100vh;
-    background-color: Transparent;
     @media (max-width: 1024px) {
         width: 100%;
     }
