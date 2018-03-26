@@ -1,0 +1,169 @@
+@import url(https://fonts.googleapis.com/css?family=Geo&subset=latin);
+
+*{
+  margin: 0;
+	padding: 0;
+	border: 0;
+	vertical-align: baseline;
+}
+.animation{
+  animation: Rock 0.3s ease-in alternate infinite;
+  -webkit-animation: Rock 0.3s ease-in alternate infinite; 
+}
+
+@keyframes Rock {  
+  from { transform: rotate(-15deg) ;-o-transform:  rotate(-15deg) ; }
+  to { transform:  rotate(10deg);  -o-transform:  rotate(10deg);}
+}
+
+@-webkit-keyframes Rock {  
+  from { -webkit-transform: rotate(-15deg) ; }
+  to { -webkit-transform:  rotate(10deg);  }
+}
+
+.animationInvest{
+  animation: RockInvest 0.3s ease-in alternate infinite;
+  -webkit-animation: RockInvest 0.3s ease-in alternate infinite;
+}
+
+@keyframes RockInvest {  
+  from { transform: rotate(10deg) ;-o-transform:  rotate(10deg) ; }
+  to { transform:  rotate(-15deg);  -o-transform:  rotate(-15deg);}
+}
+
+@-webkit-keyframes RockInvest {  
+  from { -webkit-transform: rotate(10deg) ; }
+  to { -webkit-transform:  rotate(-15deg);  }
+}
+
+/*----MY STYLE----*/
+.imgD{
+  width: 100vh;
+  padding-top: 20px;
+}
+
+@media (max-width: 732px) {
+  .imgD{
+    width: 60%;
+    }
+}
+
+@media (max-width: 576px) {
+  .imgD{
+    width: 60%;
+    }
+}
+/*----OnlinePr-----------*/
+.divPadding{
+ padding-top: 100px;
+ align-content: center;
+ text-align: center;
+}
+
+/*-----scroll----------*/
+.scroll {
+  overflow:auto;
+}
+
+.Center1{
+  align-content: center;
+  text-align: center;
+ }
+
+ /*----scroll azul-----*/
+ 
+.scrollbar {
+	margin-left: 22px;
+	float: left;
+	height: 300px;
+	width: 100vh;
+	background: #F5F5F5;
+	overflow-y: scroll;
+	margin-bottom: 25px;
+}
+
+.force-overflow {
+	min-height: 450px;
+}
+
+#style7::-webkit-scrollbar {
+	width: 10px;
+	background-color: #F5F5F5;
+}
+
+
+/* ======= STYLE7 ======= */ 
+.scrollbar {
+	
+	float: left;
+	height: 278px;
+	width: 100%;
+	background: transparent;
+	overflow-y: scroll;
+  margin-bottom: 25px;
+  padding-top: 75px;
+  margin: 0px;
+}
+
+@media (max-width: 732px) {
+  .scrollbar {
+
+    float: left;
+    max-height: 150px;
+    width: 100%;
+    background: transparent;
+    overflow-y: scroll;
+    padding-top: 50px;
+    margin: 0px;
+  
+  }
+}
+
+@media (max-width: 576px) {
+  .scrollbar {
+
+    float: left;
+    max-height: 150px;
+    width: 100%;
+    background: transparent;
+    overflow-y: scroll;
+    padding-top: 50px;
+    margin: 0px;
+  
+  }
+}
+
+.force-overflow {
+	min-height: 450px;
+}
+
+@media (max-width: 732px) {
+  .force-overflow {
+    
+  }
+}
+
+@media (max-width: 576px) {
+  .force-overflow {
+    
+  }
+}
+
+#style7::-webkit-scrollbar {
+
+  background-color: transparent;
+}
+
+
+/* ======= STYLE7 ======= */ 
+
+#style7::-webkit-scrollbar-thumb {
+	border-radius: 10px;
+	background-image: -webkit-gradient(linear,
+									   left bottom,
+									   left top,
+									   color-stop(0.44, rgb(0,0,0)),
+									   color-stop(0.72, rgb(0,0,0)),
+                     color-stop(0.86, rgb(0,0,0)));
+                      
+}
