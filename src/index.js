@@ -163,7 +163,7 @@ class GameWorld extends React.Component {
                                 </Button>
                             </DialogActions>
                         </Dialog>
-                    </div>;
+                    </div>
                 </div>
             </MuiThemeProvider>;
     }
