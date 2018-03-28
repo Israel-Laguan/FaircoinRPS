@@ -136,7 +136,7 @@ class GameWorld extends React.Component {
     render() {
         return <MuiThemeProvider theme={theme}>
                 <div>
-                    <Game ipfs={this.ipfs}  mail={this.state.mail}/>
+                    <Game ipfs={this.ipfs}  email={this.state.email}/>
                     <div className="Center">
                         <Dialog open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title" onSubmit={this.handleSubmit}>
                             <DialogTitle id="form-dialog-title">

@@ -117,7 +117,7 @@ export default class GameLobby extends React.Component {
                         opponent: this.state.opponent,
                         opponentName: this.state.opponentName,
                         lastMatch: this.state.lastMatch,
-			email: this.props.session.props.mail
+			email: this.props.session.props.email
                     }));
             this.ipfs.pubsub.publish(this.topicLobby, msg)
         }.bind(this);
