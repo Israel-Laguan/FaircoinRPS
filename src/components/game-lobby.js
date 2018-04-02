@@ -336,7 +336,7 @@ export default class GameLobby extends React.Component {
                                         <br />
                                         <br />
                                     </TextContent3>
-                                    <TextContent>
+                                   {/* <TextContent>
                                         <Span>Wins: {this.state.win} </Span>
                                         <Span>Loses: {this.state.lose} </Span>
                                         <Span>Ties: {this.state.tie} </Span>
@@ -345,7 +345,7 @@ export default class GameLobby extends React.Component {
                                             {this.props.session.state.points}{" "}
                                         </Span2>
                                     </TextContent>
-                                    <br />
+                                    <br />*/}
                                 </DivB>
                             </DivE>
                         )}
