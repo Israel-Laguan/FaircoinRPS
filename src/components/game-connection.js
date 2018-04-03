@@ -28,10 +28,10 @@ export default class GameConnection extends React.Component {
 
     render() {
         return <div>
-                <TextConnection>
+                <TextConnection2>
                     Provable fair gaming on the blockchain, powered by
                     FairCoin
-                </TextConnection>
+                </TextConnection2>
                 <br />
                 <TextConnection>CONNECTION </TextConnection>
                 <br />
@@ -57,6 +57,16 @@ const TextConnection = styled.h2`
     font-weight: 100;
     text-align: center;
     color : #fff;
+`;
+
+
+const TextConnection2 = styled.h2`
+    padding-top: 10px;
+    font-size: 18px;
+    text-align: center;
+    color: #ffc107;
+    font-weight: 600;
+    font-family: "Arial Black", Gadget, sans-serif;
 `;
 
 const TextPeer = TextConnection.extend`

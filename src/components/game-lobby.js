@@ -127,11 +127,11 @@ export default class GameLobby extends React.Component {
             }));
             this.ipfs.pubsub.publish(this.topicLobby, msg);
             
-            if (this.state.status !== "MATCH"){
+            if  (this.state.status !== "MATCH"){
                 tick = tick + 1;;
             }
             else {tick = 0}
-            if (tick >15){
+            if (tick >7){
                 this.setState({key:1})
             }
         }.bind(this);
@@ -296,9 +296,9 @@ export default class GameLobby extends React.Component {
                         <GameMatch ipfs={this.ipfs} peerId={this.props.peer.id} opponentId={this.state.opponent} session={this} />
                     </Main> : <Aside>
                         {this.state.key === 0 && !this.state.lastResult ? <img src={SearchIMG} alt="Searching" title="Searching" style={{ width: "100%" }} /> : 
-                        this.state.key === 0 && this.state.lastResult === "win"  ?(<img src={Win} alt="You Win!!" title="win" style={{ width: "100%" }} />) : 
-                        this.state.key === 0 && this.state.lastResult === "lose" ? <img src={Lose} alt="You lose!!" title="lose" style={{ width: "100%" }} /> : 
-                        this.state.key === 0 && this.state.lastResult === "tie" ? <img src={Draw} alt="Draw. Is a tie" title="tie" style={{ width: "100%" }} /> : 
+                        this.state.key === 0 && this.state.lastResult === "win"  ?(<img src={Win} alt="You Win!!" title="win" style={{ width: "100%",paddingTop:"20px" }} />) : 
+                        this.state.key === 0 && this.state.lastResult === "lose" ? <img src={Lose} alt="You lose!!" title="lose" style={{ width: "100%", paddingTop:"20px" }} /> : 
+                        this.state.key === 0 && this.state.lastResult === "tie" ? <img src={Draw} alt="Draw. Is a tie" title="tie" style={{ width: "100%", paddingTop:"20px" }} /> : 
                             <DivE>
                                 <img src={TitleIMG} className="imgD" alt="Our AWESOME GAME!!" />
 
@@ -389,23 +389,23 @@ const Span = styled.span`
     }
 `;
 
-const Span2 = Span.extend`
-    color: red;
-    padding-left: 20px;
-    padding-right: 50px;
-    font-family: "Arial Black", Gadget, sans-serif;
-    text-align: center;
+// const Span2 = Span.extend`
+//     color: red;
+//     padding-left: 20px;
+//     padding-right: 50px;
+//     font-family: "Arial Black", Gadget, sans-serif;
+//     text-align: center;
 
-    @media (max-width: 732px) {
-        padding-left: 20px;
-        padding-right: 5px;
-    }
+//     @media (max-width: 732px) {
+//         padding-left: 20px;
+//         padding-right: 5px;
+//     }
 
-    @media (max-width: 576px) {
-        padding-left: 20px;
-        padding-right: 5px;
-    }
-`;
+//     @media (max-width: 576px) {
+//         padding-left: 20px;
+//         padding-right: 5px;
+//     }
+// `;
 
 const Span4 = styled.span`
     padding-left: 16px;
