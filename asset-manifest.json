@@ -1,9 +1,10 @@
 {
-  "main.css": "static/css/main.32fd5899.css",
-  "main.css.map": "static/css/main.32fd5899.css.map",
-  "main.js": "static/js/main.eacf4e39.js",
-  "main.js.map": "static/js/main.eacf4e39.js.map",
-  "static/media/Lose.png": "static/media/Lose.324ac91b.png",
+  "main.css": "static/css/main.0fb4de81.css",
+  "main.css.map": "static/css/main.0fb4de81.css.map",
+  "main.js": "static/js/main.66dbcbf4.js",
+  "main.js.map": "static/js/main.66dbcbf4.js.map",
+  "static/media/Draw.png": "static/media/Draw.e7fbf66d.png",
+  "static/media/Lose.png": "static/media/Lose.c2d7ccf3.png",
   "static/media/Mano 1.png": "static/media/Mano 1.eece518e.png",
   "static/media/Mano 2.png": "static/media/Mano 2.ff456c77.png",
   "static/media/Mano 3.png": "static/media/Mano 3.e0aa7e54.png",
@@ -17,7 +18,7 @@
   "static/media/Papel.png": "static/media/Papel.818f6df0.png",
   "static/media/Piedra.png": "static/media/Piedra.b3ab5002.png",
   "static/media/Tijera.png": "static/media/Tijera.612d0680.png",
-  "static/media/Win.png": "static/media/Win.4e120de4.png",
+  "static/media/Win.png": "static/media/Win.ec405864.png",
   "static/media/loading.gif": "static/media/loading.5c9604b9.gif",
   "static/media/match.png": "static/media/match.f20e03e2.png"
 }
