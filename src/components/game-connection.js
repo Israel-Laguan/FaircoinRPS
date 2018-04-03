@@ -30,7 +30,7 @@ export default class GameConnection extends React.Component {
         return <div>
                 <TextConnection>
                     Provable fair gaming on the blockchain, powered by
-                    FairCoin{" "}
+                    FairCoin
                 </TextConnection>
                 <br />
                 <TextConnection>CONNECTION </TextConnection>

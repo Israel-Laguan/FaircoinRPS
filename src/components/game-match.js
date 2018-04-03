@@ -81,6 +81,7 @@ export default class GameMatch extends React.Component {
                     this.props.session.setWin();
                     this.props.session.reset("win",this.matchRecord);
                     this.setState({ noResponse: 0 });
+                    alert("You Win!!!")
                 } else if (
                     this.matchRecord.filter(x => x === "win").length ===
                     this.matchRecord.filter(x => x === "lose").length
@@ -88,6 +89,7 @@ export default class GameMatch extends React.Component {
                     this.props.session.setTie();
                     this.props.session.reset("tie",this.matchRecord);
                     this.setState({ noResponse: 0 });
+                    alert("You lose...")
                 } else if (
                     this.matchRecord.filter(x => x === "win").length <
                     this.matchRecord.filter(x => x === "lose").length
@@ -95,6 +97,7 @@ export default class GameMatch extends React.Component {
                     this.props.session.setLose();
                     this.props.session.reset("lose", this.matchRecord);
                     this.setState({ noResponse: 0 });
+                    alert("Was a draw, try again");
                 }
             }
 
