@@ -13,7 +13,7 @@ import rockImg2 from "../img/Manos1R.png";
 import paperImg2 from "../img/Manos2R.png";
 import scissorsImg2 from "../img/Manos3R.png";
 
-const turnLimit = 3;
+const turnLimit = 10;
 export default class GameMatch extends React.Component {
     constructor(props) {
         super(props);
@@ -70,8 +70,9 @@ export default class GameMatch extends React.Component {
                 return;
             } else if (
                 //When enought info, end match
-                msg.data.ack >= 3 &&
-                this.matchRecord.length === turnLimit
+                (msg.data.ack >= 3 &&
+                this.matchRecord.length === turnLimit) ||
+                this.matchRecord.length > 10
             ) {
                 if (
                     this.matchRecord.filter(x => x === "win").length >

@@ -2,6 +2,9 @@ import React from "react";
 import styled, { css } from "styled-components";
 import GameMatch from "./game-match";
 import SearchIMG from "../img/search.gif";
+import Draw from "../img/Draw.png";
+import Win from "../img/Win.png";
+import Lose from "../img/Lose.png"
 import MeetingIMG from "../img/match.png";
 import TitleIMG from "../img/title.png";
 import "../css/styles.css";
@@ -232,7 +235,8 @@ export default class GameLobby extends React.Component {
             peers: {},
             random: false,
             noResponse: 0,
-            lastMatch: matchResult
+            lastMatch: matchResult,
+            lastResult: result
         }));
     }
 
@@ -262,63 +266,45 @@ export default class GameLobby extends React.Component {
     }
 
     render() {
-        return (
-            <Div>
-                {this.state.status === "MATCHING" ? (
-                    <Main>
+        return <Div>
+                {this.state.status === "MATCHING" ? <Main>
                         <br />
-                            <Span5>
-                                Opponent:
-                                <Span5Inte>
-                                    {this.state.opponentName === "none" || this.state.opponentName === undefined
-                                        ? this.state.opponent
-                                        : this.state.opponentName}
-                                </Span5Inte>
-                            </Span5>
-                        <GameMatch
-                            ipfs={this.ipfs}
-                            peerId={this.props.peer.id}
-                            opponentId={this.state.opponent}
-                            session={this}
-                        />
-                    </Main>
-                ) : (
-                    <Aside>
-                        {this.state.key === 0 ? (
-                            <img
-                                src={SearchIMG}
-                                alt="Searching"
-                                title="Searching"
-                                style={{ width: "100%" }}
-                            />
-                        ) : (
-                            <DivE>
-                                <img
-                                    src={TitleIMG}
-                                    className="imgD"
-                                    alt="Our AWESOME GAME!!"
-                                />
+                        <Span5>
+                            Opponent:
+                            <Span5Inte>
+                                {this.state.opponentName === "none" ||
+                                this.state.opponentName === undefined
+                                    ? this.state.opponent
+                                    : this.state.opponentName}
+                            </Span5Inte>
+                        </Span5>
+                        <GameMatch ipfs={this.ipfs} peerId={this.props.peer.id} opponentId={this.state.opponent} session={this} />
+                    </Main> : <Aside>
+                        {this.state.key === 0 && !this.state.lastResult ? <img src={SearchIMG} alt="Searching" title="Searching" style={{ width: "100%" }} /> : this.state.key === 0 && this.state.lastResult === "win" ? <img src={Win} alt="You Win!!" title="win" style={{ width: "100%" }} /> : this.state.key === 0 && this.state.lastResult === "lose" ? <img src={Lose} alt="You lose!!" title="lose" style={{ width: "100%" }} /> : this.state.key === 0 && this.state.lastResult === "tie" ? <img src={Draw} alt="Draw. Is a tie" title="tie" style={{ width: "100%" }} /> : <DivE>
+                                <img src={TitleIMG} className="imgD" alt="Our AWESOME GAME!!" />
 
                                 <ButtonSelection
                                     onClick={() => this.handleRandom()}
                                 >
                                     {this.state.random ? (
                                         <TextContent>
-                                            Opponent Picked, please wait...{" "}
+                                            Opponent Picked, please
+                                            wait...{" "}
                                         </TextContent>
                                     ) : (
                                         <TextContent2>
-                                            LET OUR MONKEYS CHOOSE A MATCH FOR
-                                            YOU{" "}
+                                            LET OUR MONKEYS CHOOSE A
+                                            MATCH FOR YOU{" "}
                                         </TextContent2>
                                     )}
                                 </ButtonSelection>
                                 <FondoEm>
                                     <div className="scrollbar" id="style7">
                                         <div className="force-overflow">
-                                            {Object.keys(this.state.peers).map(
-                                                (peerId, index) =>
-                                                    this.peer(peerId, index)
+                                            {Object.keys(
+                                                this.state.peers
+                                            ).map((peerId, index) =>
+                                                this.peer(peerId, index)
                                             )}
                                         </div>
                                     </div>
@@ -336,7 +322,7 @@ export default class GameLobby extends React.Component {
                                         <br />
                                         <br />
                                     </TextContent3>
-                                   {/* <TextContent>
+                                    {/* <TextContent>
                                         <Span>Wins: {this.state.win} </Span>
                                         <Span>Loses: {this.state.lose} </Span>
                                         <Span>Ties: {this.state.tie} </Span>
@@ -347,12 +333,9 @@ export default class GameLobby extends React.Component {
                                     </TextContent>
                                     <br />*/}
                                 </DivB>
-                            </DivE>
-                        )}
-                    </Aside>
-                )}
-            </Div>
-        );
+                            </DivE>}
+                    </Aside>}
+            </Div>;
     }
 }
 
