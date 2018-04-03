@@ -1,8 +1,8 @@
 {
   "main.css": "static/css/main.40374628.css",
   "main.css.map": "static/css/main.40374628.css.map",
-  "main.js": "static/js/main.d6d715d9.js",
-  "main.js.map": "static/js/main.d6d715d9.js.map",
+  "main.js": "static/js/main.29028352.js",
+  "main.js.map": "static/js/main.29028352.js.map",
   "static/media/Lose.png": "static/media/Lose.324ac91b.png",
   "static/media/Mano 1.png": "static/media/Mano 1.eece518e.png",
   "static/media/Mano 2.png": "static/media/Mano 2.ff456c77.png",
@@ -19,6 +19,5 @@
   "static/media/Tijera.png": "static/media/Tijera.612d0680.png",
   "static/media/Win.png": "static/media/Win.4e120de4.png",
   "static/media/loading.gif": "static/media/loading.5c9604b9.gif",
-  "static/media/match.png": "static/media/match.f20e03e2.png",
-  "static/media/search.gif": "static/media/search.5ebdef8a.gif"
+  "static/media/match.png": "static/media/match.f20e03e2.png"
 }
