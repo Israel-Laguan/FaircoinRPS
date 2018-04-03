@@ -24,25 +24,61 @@ export default class GameMatch extends React.Component {
             theirs: "",
             result: "",
             ack: 0,
-            noResponse: 0
+            noResponse: 0, 
+            randomized: false
         };
         this.matchRecord = []; //set on lines 87, 94 & 101
         this.ipfs = this.props.ipfs;
         this.status = this.props.status;
+
+        this.myLittleBot = function() {
+            var posible = ["R", "P", "S"];
+            if (this.state.mine !== "" && this.state.theirs === "") {
+                const botChoice = posible[Math.floor(Math.random() * 2)];
+                var stateResult;
+                if (this.state.mine === botChoice) {
+                    //this chunk judge the game
+                    stateResult = "tie";
+                    this.matchRecord.push("tie");
+                } else if ((this.state.mine === "R" && botChoice === "P") || (this.state.mine === "P" && botChoice === "S") || (this.state.mine === "S" && botChoice === "R")) {
+                           stateResult = "lose";
+                           this.matchRecord.push("lose");
+                       } else if ((this.state.mine === "R" && botChoice === "S") || (this.state.mine === "P" && botChoice === "R") || (this.state.mine === "S" && botChoice === "P")) {
+                                  stateResult = "win";
+                                  this.matchRecord.push("win");
+                              }
+                              setTimeout(
+                                this.setState((prevState, props) => ({
+                                    ack: 0,
+                                    round: prevState.round +1,
+                                    mine: "",
+                                    their: "",
+                                    noResponse: 0,
+                                    result: stateResult
+                                })),3000);
+            }
+            return;
+        }.bind(this);
 
         this.pong = function(msg) {
             //analize incoming msg.
             if (msg.from !== this.props.opponentId) {
                 console.log("Wait Response...");
                 if (this.state.mine !== "" && this.state.theirs === "") {
-                    if (this.state.noResponse === 45 || this.state.noResponse > 60) {
-                        this.props.session.reset("No Response",[]);
+                    if (this.state.noResponse > 45 && this.state.noResponse < 60) {
+                        this.myLittleBot();
+                        this.setState({
+                            noResponse: 0
+                        });
                     }
-                    this.setState({
-                        noResponse: this.state.noResponse + 1
-                    });
+                    if(!this.state.randomized){
+                        this.setState({
+                            noResponse: this.state.noResponse + 1
+                        });
+                    }
+                    
                 } else {
-                    if (this.state.noResponse === 60) {
+                    if (this.state.noResponse > 100) {
                         this.props.session.reset("No Response",[]);
                     }
                     this.setState({
