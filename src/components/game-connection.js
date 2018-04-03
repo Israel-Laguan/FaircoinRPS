@@ -28,11 +28,16 @@ export default class GameConnection extends React.Component {
 
     render() {
         return <div>
+                <TextConnection>
+                    Provable fair gaming on the blockchain, powered by
+                    FairCoin{" "}
+                </TextConnection>
                 <br />
                 <TextConnection>CONNECTION </TextConnection>
                 <br />
                 <TextConnection>MyPeerId:</TextConnection>
                 <TextPeers>{this.state.peer.id}</TextPeers>
+
                 <TextConnection>Player Status:</TextConnection>
                 <TextPeer>{this.props.session.state.status}</TextPeer>
                 <br />

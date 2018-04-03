@@ -1,7 +1,7 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import GameMatch from "./game-match";
-import SearchIMG from "../img/search.gif";
+import SearchIMG from "../img/loading.gif";
 import Draw from "../img/Draw.png";
 import Win from "../img/Win.png";
 import Lose from "../img/Lose.png"
@@ -10,6 +10,7 @@ import TitleIMG from "../img/title.png";
 import "../css/styles.css";
 
 import OnlinePeers from "../img/Online-Peers.png";
+var tick = 0;
 
 export default class GameLobby extends React.Component {
     constructor(props) {
@@ -112,18 +113,23 @@ export default class GameLobby extends React.Component {
 
         this.ping = function() {
             var msg = new Buffer(JSON.stringify({
-                        status: this.state.status,
-                        usernameHash: this.props.usernameHash,
-                        win: this.state.win,
-                        lose: this.state.lose,
-                        tie: this.state.tie,
-                        opponent: this.state.opponent,
-                        opponentName: this.state.opponentName,
-                        lastMatch: this.state.lastMatch,
-			email: this.props.session.props.email,
-			id: new Date().toLocaleString()
-                    }));
-            this.ipfs.pubsub.publish(this.topicLobby, msg)
+                status: this.state.status,
+                usernameHash: this.props.usernameHash,
+                win: this.state.win,
+                lose: this.state.lose,
+                tie: this.state.tie,
+                opponent: this.state.opponent,
+                opponentName: this.state.opponentName,
+                lastMatch: this.state.lastMatch,
+                email: this.props.session.props.email,
+                id: new Date().toLocaleString()
+            }));
+            this.ipfs.pubsub.publish(this.topicLobby, msg);
+            
+            if (this.state.status !== "MATCH"){
+                tick = tick + 1;;
+            }
+            else {tick = 0}
         }.bind(this);
     }
 
@@ -227,6 +233,7 @@ export default class GameLobby extends React.Component {
     reset(result,matchResult) {
         this.session.setPoints(result); //change props of father
         this.session.setStatus("WAITING"); //change props of father
+        tick = 0;
         this.setState((prevState, props) => ({
             status: "CHILLING",
             opponent: "none",
@@ -280,7 +287,11 @@ export default class GameLobby extends React.Component {
                         </Span5>
                         <GameMatch ipfs={this.ipfs} peerId={this.props.peer.id} opponentId={this.state.opponent} session={this} />
                     </Main> : <Aside>
-                        {this.state.key === 0 && !this.state.lastResult ? <img src={SearchIMG} alt="Searching" title="Searching" style={{ width: "100%" }} /> : this.state.key === 0 && this.state.lastResult === "win" ? <img src={Win} alt="You Win!!" title="win" style={{ width: "100%" }} /> : this.state.key === 0 && this.state.lastResult === "lose" ? <img src={Lose} alt="You lose!!" title="lose" style={{ width: "100%" }} /> : this.state.key === 0 && this.state.lastResult === "tie" ? <img src={Draw} alt="Draw. Is a tie" title="tie" style={{ width: "100%" }} /> : <DivE>
+                        {this.state.key === 0 && !this.state.lastResult ? <img src={SearchIMG} alt="Searching" title="Searching" style={{ width: "100%" }} /> : 
+                        this.state.key === 0 && this.state.lastResult === "win"  ?(<img src={Win} alt="You Win!!" title="win" style={{ width: "100%" }} />) : 
+                        this.state.key === 0 && this.state.lastResult === "lose" ? <img src={Lose} alt="You lose!!" title="lose" style={{ width: "100%" }} /> : 
+                        this.state.key === 0 && this.state.lastResult === "tie" ? <img src={Draw} alt="Draw. Is a tie" title="tie" style={{ width: "100%" }} /> : 
+                            <DivE>
                                 <img src={TitleIMG} className="imgD" alt="Our AWESOME GAME!!" />
 
                                 <ButtonSelection
