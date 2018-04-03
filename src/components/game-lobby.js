@@ -26,7 +26,6 @@ export default class GameLobby extends React.Component {
             key: 0,
             random: false,
             noResponse: 0,
-            openModal: false,
         };
         this.topicLobby = "vertex.rps.lobby.dev"; 
         this.ipfs = this.props.session.ipfs;
@@ -43,7 +42,6 @@ export default class GameLobby extends React.Component {
                 if (this.state.opponent !== "none" && this.state.status === "CHALLENGING") {
                     if (this.state.noResponse === 15 || this.state.noResponse > 25) {
                         this.softReset("No Response");
-                        console.log("soft reset")
                     }
                     this.setState({
                         noResponse: this.state.noResponse + 1
@@ -197,7 +195,7 @@ export default class GameLobby extends React.Component {
                     <PeerButton>CHALLENGING</PeerButton>
                     <br />
                     <Timer>
-                        Wait {26 - this.state.noResponse} seconds
+                        Wait {19 - this.state.noResponse} seconds
                     </Timer>
                 </div>;
         }

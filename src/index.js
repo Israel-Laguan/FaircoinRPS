@@ -145,8 +145,7 @@ class GameWorld extends React.Component {
                             <DialogContent>
                                 <DialogContentText>
                                     Please enter your email
-                                    address here. To claim prizes, we need your email.
-                                    No chain mails. Promised.
+                                    address.
                                 </DialogContentText>
                                 <TextField autoFocus margin="dense" id="name" label="Email Address" type="email" fullWidth value={this.state.email} onChange={this.handleChangeNameEmail} onSubmit={this.handleSubmit} />
                                 <DialogContentText>
