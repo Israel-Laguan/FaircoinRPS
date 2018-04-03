@@ -13,28 +13,28 @@ import Dialog, {
     DialogTitle
 } from "material-ui/Dialog";
 const Ipfs = window.Ipfs;
-const theme = createMuiTheme({   
-  palette: {
-    primary: {
-      main: '#ffee03',
+const theme = createMuiTheme({
+    palette: {
+        primary: {
+            main: "#ffee03"
+        },
+        secondary: {
+            main: "#ff6c4c"
+        },
+        textColor: "#ffee03"
     },
-    secondary: {
-      main: '#ff6c4c', 
+    overrides: {
+        MuiButton: {
+            root: {
+                background: "#000",
+                color: "#fff",
+                height: 28,
+                padding: "0 10px",
+                textTransform: "none",
+                fontFamily: "sans-serif"
+            }
+        },
     },
-    textColor: '#ffee03',
-  },
-  overrides: {
-    MuiButton: {
-      root: {
-        background: "#000",
-        color: '#fff',
-        height: 28,
-        padding: "0 10px",
-        textTransform: 'none',
-        fontFamily: "sans-serif",
-      },
-    },
-  },
 });
 
 class GameWorld extends React.Component {

@@ -25,7 +25,8 @@ export default class GameLobby extends React.Component {
             tie: 0, 
             key: 0,
             random: false,
-            noResponse: 0
+            noResponse: 0,
+            openModal: false,
         };
         this.topicLobby = "vertex.rps.lobby.dev"; 
         this.ipfs = this.props.session.ipfs;
@@ -107,7 +108,7 @@ export default class GameLobby extends React.Component {
                         opponentName: this.opponentsName[msg.from]
                     };
                 }
-                return { peers: prevState.peers, key: 1 };
+                return { peers: prevState.peers};
             });
         }.bind(this);
 
@@ -130,6 +131,9 @@ export default class GameLobby extends React.Component {
                 tick = tick + 1;;
             }
             else {tick = 0}
+            if (tick >15){
+                this.setState({key:1})
+            }
         }.bind(this);
     }
 
@@ -151,6 +155,10 @@ export default class GameLobby extends React.Component {
             status: "CHALLENGING"
         });
     }
+
+    handleClose = () => {
+        this.setState({ openModal: false });
+    };
 
     handleRandom() {
         for (var peerId in this.state.peers) {
@@ -348,7 +356,11 @@ export default class GameLobby extends React.Component {
                     </Aside>}
             </Div>;
     }
+
+    
 }
+
+
 
 const Div = styled.div`
     display: flex;
