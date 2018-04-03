@@ -13,7 +13,7 @@ import rockImg2 from "../img/Manos1R.png";
 import paperImg2 from "../img/Manos2R.png";
 import scissorsImg2 from "../img/Manos3R.png";
 
-const turnLimit = 10;
+const turnLimit = 4;
 export default class GameMatch extends React.Component {
     constructor(props) {
         super(props);
