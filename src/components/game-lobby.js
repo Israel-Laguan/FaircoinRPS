@@ -41,7 +41,7 @@ export default class GameLobby extends React.Component {
         this.pong = function(msg) {
             if (msg.from === this.props.peer.id) {
                 if (this.state.opponent !== "none" && this.state.status === "CHALLENGING") {
-                    if (this.state.noResponse === 25 || this.state.noResponse > 30) {
+                    if (this.state.noResponse === 15 || this.state.noResponse > 25) {
                         this.softReset("No Response");
                         console.log("soft reset")
                     }
