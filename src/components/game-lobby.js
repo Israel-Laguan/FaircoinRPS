@@ -11,7 +11,16 @@ import "../css/styles.css";
 
 import OnlinePeers from "../img/Online-Peers.png";
 var tick = 0;
-
+const Advice = [
+    "In the event of a scissors-scissors tie, the next choice should be scissors again — precisely because “everybody expects you to choose rock.”",
+    "Rock, paper, scissors (RPS) is a playground game as popular in the US and UK as it is in Japan (where it dates to the 18nth century at least). ",
+    "Good RPS players attempt to recognise and exploit unconscious patterns in their opponents’ play. ",
+    "Rock is the testosterone choice, the most aggressive and the one favored by angry players.",
+    "Naïve players don’t like to repeat the same throw more than twice in a row. ",
+    "Should your opponent throw rock . . . rock . . . you’d want to choose scissors on the next throw.",
+    "A player who loses is more likely to switch to a different throw the next time. Some players unconsciously “copy” the sign that just beat them.",
+    "Like chess masters, good RPS players generally plan their openings and then quickly switch to improvisation."
+];
 export default class GameLobby extends React.Component {
     constructor(props) {
         super(props);
@@ -43,9 +52,6 @@ export default class GameLobby extends React.Component {
                     if (this.state.noResponse === 15 || this.state.noResponse > 25) {
                         this.softReset("No Response");
                     }
-                    this.setState({
-                        noResponse: this.state.noResponse + 1
-                    });
                 } 
                 return;
             }
@@ -132,6 +138,15 @@ export default class GameLobby extends React.Component {
             if (tick >7){
                 this.setState({key:1})
             }
+            if (this.state.opponent !== "none" && this.state.status === "CHALLENGING") {
+                if (this.state.noResponse === 15 || this.state.noResponse > 25) {
+                    this.softReset("No Response");
+                }
+                this.setState({
+                    noResponse: this.state.noResponse + 1
+                });
+            }
+            return;
         }.bind(this);
     }
 
@@ -195,7 +210,7 @@ export default class GameLobby extends React.Component {
                     <PeerButton>CHALLENGING</PeerButton>
                     <br />
                     <Timer>
-                        Wait {19 - this.state.noResponse} seconds
+                        Wait {15 - this.state.noResponse} seconds
                     </Timer>
                 </div>;
         }
@@ -218,6 +233,7 @@ export default class GameLobby extends React.Component {
                         this.state.peers[peerId].status === "CHALLENGING" && 
                         this.state.peers[peerId].opponent === this.props.peer.id
                     } 
+                    style={this.state.peers[peerId].status === "MATCHING"?{backgroundColor:"black",color:"white"}:null}
                     disabled={
                         !(this.state.peers[peerId].status === "CHALLENGING" && 
                         this.state.peers[peerId].opponent === this.props.peer.id) &&
@@ -346,6 +362,26 @@ export default class GameLobby extends React.Component {
                                             </Span4Inte>
                                         </Span4>
                                         <br />
+                                        {/* <Span2>
+                                            {this.state.lastResult ===
+                                            "lose"
+                                                ? Advice[
+                                                      Math.floor(
+                                                          Math.random() *
+                                                              8
+                                                      )
+                                                  ]
+                                                : this.state
+                                                      .lastResult ===
+                                                  "win"
+                                                    ? Advice[
+                                                          Math.floor(
+                                                              Math.random() *
+                                                                  8
+                                                          )
+                                                      ]
+                                                    : null}
+                                        </Span2> */}
                                         <br />
                                     </TextContent3>
                                     {/* <TextContent>
@@ -393,23 +429,23 @@ const Span = styled.span`
     }
 `;
 
-// const Span2 = Span.extend`
-//     color: red;
-//     padding-left: 20px;
-//     padding-right: 50px;
-//     font-family: "Arial Black", Gadget, sans-serif;
-//     text-align: center;
+const Span2 = Span.extend`
+    color: red;
+    padding-left: 20px;
+    padding-right: 50px;
+    font-family: "Arial Black", Gadget, sans-serif;
+    text-align: center;
 
-//     @media (max-width: 732px) {
-//         padding-left: 20px;
-//         padding-right: 5px;
-//     }
+    @media (max-width: 732px) {
+        padding-left: 20px;
+        padding-right: 5px;
+    }
 
-//     @media (max-width: 576px) {
-//         padding-left: 20px;
-//         padding-right: 5px;
-//     }
-// `;
+    @media (max-width: 576px) {
+        padding-left: 20px;
+        padding-right: 5px;
+    }
+`;
 
 const Span4 = styled.span`
     padding-left: 16px;

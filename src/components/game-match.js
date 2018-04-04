@@ -47,6 +47,7 @@ export default class GameMatch extends React.Component {
                                   stateResult = "win";
                                   this.matchRecord.push("win");
                               }
+                              setTimeout(null, 3000);
                               setTimeout(
                                 this.setState((prevState, props) => ({
                                     ack: 0,
@@ -56,8 +57,9 @@ export default class GameMatch extends React.Component {
                                     noResponse: 0,
                                     result: stateResult
                                 })),3000);
-            }
+                                
             return;
+            }
         }.bind(this);
 
         this.pong = function(msg) {
@@ -65,21 +67,32 @@ export default class GameMatch extends React.Component {
             if (msg.from !== this.props.opponentId) {
                 console.log("Wait Response...");
                 if (this.state.mine !== "" && this.state.theirs === "") {
-                    if (this.state.noResponse > 45 && this.state.noResponse < 60) {
+                    if (this.state.round >= 10){
+                        this.props.session.reset("No Response", []);
+                    }
+                    var randLimit = Math.ceil(Math.random() * 16);
+                    if (this.state.noResponse > randLimit && this.state.randomized) {
                         this.myLittleBot();
+                        console.log("inside randomized");
+                        this.setState({ noResponse: 0 });
+                    }
+                    if (this.state.noResponse > 30 && this.state.noResponse < 40) {
+                        this.myLittleBot();
+                        console.log("You against ODDS");
                         this.setState({
-                            noResponse: 0
+                            noResponse: 0,
+                            randomized: true
                         });
                     }
-                    if(!this.state.randomized){
-                        this.setState({
-                            noResponse: this.state.noResponse + 1
-                        });
-                    }
+                    this.setState({
+                        noResponse: this.state.noResponse + 1
+                    });
                     
                 } else {
                     if (this.state.noResponse > 100) {
                         this.props.session.reset("No Response",[]);
+                        console.log("ipfs.pubsub.ubsubscribe: " + this.topic);
+                        this.ipfs.pubsub.unsubscribe(this.topic, this.pong);
                     }
                     this.setState({
                         noResponse: this.state.noResponse + 1
@@ -386,6 +399,7 @@ export default class GameMatch extends React.Component {
                     )}
                 </Selection>
             </Div>
+
         );
     }
 }
