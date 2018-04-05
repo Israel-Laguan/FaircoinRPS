@@ -309,15 +309,16 @@ export default class GameLobby extends React.Component {
                         </Span5>
                         <GameMatch ipfs={this.ipfs} peerId={this.props.peer.id} opponentId={this.state.opponent} session={this} />
                     </Main> : <Aside>
-                        {this.state.key === 0 && !this.state.lastResult ? <img src={SearchIMG} alt="Searching" title="Searching" style={{ width: "100%" }} /> : this.state.key === 0 && this.state.lastResult === "win" ? <div style={{ paddingTop: "50px" }}>
+                        {this.state.key === 0 && !this.state.lastResult ? <img src={SearchIMG} alt="Searching" title="Searching" style={{ width: "100%" }} /> : 
+                            this.state.key === 0 && (this.state.lastResult === "win" || this.state.lastResult === "winBot")? <div style={{ paddingTop: "50px" }}>
                                 <div className="avatar">
                                     <img src={Win} alt="You Win" style={{ width: "100%", paddingTop: "20px" }} />
                                 </div>
-                            </div> : this.state.key === 0 && this.state.lastResult === "lose" ? <div style={{ paddingTop: "50px" }}>
+                            </div> : this.state.key === 0 && (this.state.lastResult === "lose" || this.state.lastResult === "loseBot") ? <div style={{ paddingTop: "50px" }}>
                                 <div className="avatar">
                                     <img src={Lose} alt="You lose!!" title="lose" style={{ width: "100%", paddingTop: "20px" }} />
                                 </div>
-                            </div> : this.state.key === 0 && this.state.lastResult === "tie" ? <div style={{ paddingTop: "50px" }}>
+                            </div> : this.state.key === 0 && (this.state.lastResult === "tie" || this.state.lastResult === "tieBot")? <div style={{ paddingTop: "50px" }}>
                                 <div className="avatar">
                                     <img src={Draw} alt="Draw. Is a tie" title="tie" style={{ width: "100%", paddingTop: "20px" }} />
                                 </div>

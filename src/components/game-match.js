@@ -14,6 +14,9 @@ import paperImg2 from "../img/Manos2R.png";
 import scissorsImg2 from "../img/Manos3R.png";
 
 const turnLimit = 10;
+var myChoice = "";
+var bot = "";
+
 export default class GameMatch extends React.Component {
     constructor(props) {
         super(props);
@@ -29,61 +32,63 @@ export default class GameMatch extends React.Component {
         };
         this.matchRecord = []; //set on lines 87, 94 & 101
         this.ipfs = this.props.ipfs;
-        this.status = this.props.status;
 
         this.myLittleBot = function() {
-            var posible = ["R", "P", "S"];
-            if (this.state.mine !== "" && this.state.theirs === "") {
+            const posible = ["R", "P", "S"];
+            if ((this.state.mine !== "" && this.state.theirs === "") || (myChoice !== "" && bot === "")) {
                 const botChoice = posible[Math.floor(Math.random() * 2)];
+                console.log(botChoice)
                 var stateResult;
                 if (this.state.mine === botChoice) {
                     //this chunk judge the game
                     stateResult = "tie";
                     this.matchRecord.push("tie");
+                    myChoice = this.state.mine;
+                    bot = botChoice;
                 } else if ((this.state.mine === "R" && botChoice === "P") || (this.state.mine === "P" && botChoice === "S") || (this.state.mine === "S" && botChoice === "R")) {
                            stateResult = "lose";
                            this.matchRecord.push("lose");
+                            myChoice = this.state.mine;
+                            bot = botChoice;
                        } else if ((this.state.mine === "R" && botChoice === "S") || (this.state.mine === "P" && botChoice === "R") || (this.state.mine === "S" && botChoice === "P")) {
                                   stateResult = "win";
                                   this.matchRecord.push("win");
+                                    myChoice = this.state.mine;
+                                    bot = botChoice;
                               }
-                              setTimeout(null, 3000);
-                              setTimeout(
-                                this.setState((prevState, props) => ({
-                                    ack: 0,
-                                    round: prevState.round +1,
-                                    mine: "",
-                                    their: "",
-                                    noResponse: 0,
-                                    result: stateResult
-                                })),3000);
+                              var bandera = this.state.noResponse + 5;
+                              if (this.state.noResponse === bandera){this.resetRandom(stateResult)};
                                 
             return;
             }
         }.bind(this);
 
+        this.resetRandom = function(result){
+                                this.setState((prevState, props) => ({
+                                    ack: 0,
+                                    round: prevState.round +1,
+                                    mine: "",
+                                    theirs: "",
+                                    noResponse: 0,
+                                    result: result
+                                }));
+                                myChoice = "";
+                                bot = "";
+                            }.bind(this)
+
         this.pong = function(msg) {
             //analize incoming msg.
+            
             if (msg.from !== this.props.opponentId) {
                 console.log("Wait Response...");
                 if (this.state.mine !== "" && this.state.theirs === "") {
-                    if (this.state.round >= 10){
-                        this.props.session.reset("No Response", []);
-                    }
-                    var randLimit = Math.ceil(Math.random() * 16);
-                    if (this.state.noResponse > randLimit && this.state.randomized) {
-                        this.myLittleBot();
-                        console.log("inside randomized");
-                        this.setState({ noResponse: 0 });
-                    }
-                    if (this.state.noResponse > 30 && this.state.noResponse < 40) {
-                        this.myLittleBot();
+                    /*if (this.state.noResponse > 30 && this.state.noResponse < 40) {
                         console.log("You against ODDS");
                         this.setState({
                             noResponse: 0,
                             randomized: true
                         });
-                    }
+                    }*/
                     this.setState({
                         noResponse: this.state.noResponse + 1
                     });
@@ -147,7 +152,7 @@ export default class GameMatch extends React.Component {
                 }
             }
 
-            if (msg.data.round === this.state.round) {
+            if (msg.data.round === this.state.round && !this.state.randomized) {
                 this.setState((prevState, props) => {
                     return { theirs: msg.data.theirs };
                 });
@@ -215,6 +220,36 @@ export default class GameMatch extends React.Component {
                 })
             );
             this.ipfs.pubsub.publish(this.topic, msg);
+            if (this.state.randomized) {
+                if ((myChoice !== "" && bot === "") || (this.state.mine !== "" && this.state.theirs === "")) {
+                    if (this.state.round >= 10 && this.state.randomized) {
+                        if (this.matchRecord.filter(x => x === "win").length > this.matchRecord.filter(x => x === "lose").length) {
+                            this.props.session.reset("winBot", []);
+                            this.setState({ noResponse: 0 });
+                        } else if (this.matchRecord.filter(x => x === "win").length === this.matchRecord.filter(x => x === "lose").length) {
+                            this.props.session.reset("tieBot", []);
+                            this.setState({ noResponse: 0 });
+                        } else if (this.matchRecord.filter(x => x === "win").length < this.matchRecord.filter(x => x === "lose").length) {
+                            this.props.session.reset("loseBot", []);
+                            this.setState({ noResponse: 0 });
+                        }
+                    }
+                    var randLimit = Math.ceil(Math.random() * 16);
+                    if (this.state.noResponse > randLimit && this.state.randomized) {
+                        this.myLittleBot();
+                        console.log("inside randomized");
+                        this.setState({ noResponse: 0 , mine: ""});
+                    }
+                    this.setState({
+                        noResponse: this.state.noResponse + 1
+                    });
+                } else {
+                    this.setState({
+                        noResponse: this.state.noResponse + 1
+                    });
+                }
+                return;
+            }
             if (this.matchRecord.length === turnLimit && this.state.ack >= 3) {
                 //When enought info, end match
                 if (
@@ -256,6 +291,7 @@ export default class GameMatch extends React.Component {
     }
 
     play(selection) {
+        myChoice = selection;
         this.setState((prevState, props) => {
             if (prevState.mine === "") {
                 return { mine: selection };
@@ -264,143 +300,280 @@ export default class GameMatch extends React.Component {
     }
 
     render() {
-        return (
-            <Div>
-                <DivScore>
-                    <Score>
-                        <Result>
-                            <Span>Wins</Span>
-                            <SpanPeer text>
-                                {
-                                    this.matchRecord.filter(x => x === "win")
-                                        .length
-                                }
-                            </SpanPeer>
-                        </Result>
-                        <Result>
-                            <Span>Ties</Span>
-                            <SpanPeer text>
-                                {
-                                    this.matchRecord.filter(x => x === "tie")
-                                        .length
-                                }
-                            </SpanPeer>
-                        </Result>
-                        <Result>
-                            <Span>Wins</Span>
-                            <SpanPeer text>
-                                {
-                                    this.matchRecord.filter(x => x === "lose")
-                                        .length
-                                }
-                            </SpanPeer>
-                        </Result>
-                    </Score>
-                </DivScore>
-                <br />
-                <Main>
-                    <DivContainer>
-                        <div>
-                            <H1>YOU</H1>
-                        </div>
-                        <br />
-                        <Container>
-                            {this.state.mine === "" ||
-                            this.state.theirs === "" ? (
-                                <Animation
-                                    src={rockImg}
-                                    className="animation"
-                                />
-                            ) : this.state.mine === "R" ? (
-                                <Animation2 src={rockImg} />
-                            ) : this.state.mine === "P" ? (
-                                <Animation2 src={paperImg} />
-                            ) : (
-                                <Animation2 src={scissorsImg} />
-                            )}
-                        </Container>
-                        <br />
-                    </DivContainer>
-                    <DivContainer>
-                        <div>
-                            <H1>OPPONENT</H1>
-                        </div>
-                        <br />
-                        <Container>
-                            {this.state.mine === "" ||
-                            this.state.theirs === "" ? (
-                                <Animation
-                                    src={HisRock}
-                                    className="animationInvest"
-                                />
-                            ) : this.state.theirs === "R" ? (
-                                <Animation2 src={HisRock} />
-                            ) : this.state.theirs === "P" ? (
-                                <Animation2 src={HisPaper} />
-                            ) : (
-                                <Animation2 src={HisScissors} />
-                            )}
-                        </Container>
-                    </DivContainer>
+        if (!this.state.randomized) {
+            return <Div>
+                    <DivScore>
+                        <Score>
+                            <Result>
+                                <Span>Wins</Span>
+                                <SpanPeer text>
+                                    {
+                                        this.matchRecord.filter(
+                                            x => x === "win"
+                                        ).length
+                                    }
+                                </SpanPeer>
+                            </Result>
+                            <Result>
+                                <Span>Ties</Span>
+                                <SpanPeer text>
+                                    {
+                                        this.matchRecord.filter(
+                                            x => x === "tie"
+                                        ).length
+                                    }
+                                </SpanPeer>
+                            </Result>
+                            <Result>
+                                <Span>Wins</Span>
+                                <SpanPeer text>
+                                    {
+                                        this.matchRecord.filter(
+                                            x => x === "lose"
+                                        ).length
+                                    }
+                                </SpanPeer>
+                            </Result>
+                        </Score>
+                    </DivScore>
                     <br />
-                </Main>
-                <Selection>
-                    {this.state.mine === "" ? (
-                        <div>
-                            <MatchButton onClick={() => this.play("R")}>
-                                <Img src={Piedra} alt="I play Rock!" />
-                            </MatchButton>
-                            <MatchButton onClick={() => this.play("P")}>
-                                <Img src={Papel} alt="I play Paper!" />
-                            </MatchButton>
-                            <MatchButton onClick={() => this.play("S")}>
-                                <Img src={Tijera} alt="I play Scissors!" />
-                            </MatchButton>
-                        </div>
-                    ) : this.state.mine === "R" ? (
-                        <div>
-                            <ButtonSelection>
-                                <Img src={rockImg2} alt="I play Rock!" />
-                            </ButtonSelection>
-                            <MatchButton disabled="true">
-                                <Img src={Papel} alt="I play Paper!" />
-                            </MatchButton>
-                            <MatchButton disabled="true">
-                                <Img src={Tijera} alt="I play Scissors!" />
-                            </MatchButton>
-                        </div>
-                    ) : this.state.mine === "P" ? (
-                        <div>
-                            <MatchButton>
-                                <Img src={Piedra} alt="I play Rock!" />
-                            </MatchButton>
-                            <ButtonSelection disabled="true">
-                                <Img src={paperImg2} alt="I play Paper!" />
-                            </ButtonSelection>
-                            <MatchButton disabled="true">
-                                <Img src={Tijera} alt="I play Scissors!" />
-                            </MatchButton>
-                        </div>
-                    ) : (
-                        <div>
-                            <MatchButton>
-                                <Img src={Piedra} alt="I play Rock!" />
-                            </MatchButton>
-                            <MatchButton disabled="true">
-                                <Img src={Papel} alt="I play Paper!" />
-                            </MatchButton>
-                            <ButtonSelection disabled="true">
-                                <Img
-                                    src={scissorsImg2}
-                                    alt="I play Scissors!"
-                                />
-                            </ButtonSelection>
-                        </div>
-                    )}
-                </Selection>
-            </Div>
-
-        );
+                    <Main>
+                        <DivContainer>
+                            <div>
+                                <H1>YOU</H1>
+                            </div>
+                            <br />
+                            <Container>
+                                {this.state.mine === "" ||
+                                this.state.theirs === "" ? (
+                                    <Animation
+                                        src={rockImg}
+                                        className="animation"
+                                    />
+                                ) : this.state.mine === "R" ? (
+                                    <Animation2 src={rockImg} />
+                                ) : this.state.mine === "P" ? (
+                                    <Animation2 src={paperImg} />
+                                ) : (
+                                    <Animation2 src={scissorsImg} />
+                                )}
+                            </Container>
+                            <br />
+                        </DivContainer>
+                        <DivContainer>
+                            <div>
+                                <H1>OPPONENT</H1>
+                            </div>
+                            <br />
+                            <Container>
+                                {this.state.mine === "" ||
+                                this.state.theirs === "" ? (
+                                    <Animation
+                                        src={HisRock}
+                                        className="animationInvest"
+                                    />
+                                ) : this.state.theirs === "R" ? (
+                                    <Animation2 src={HisRock} />
+                                ) : this.state.theirs === "P" ? (
+                                    <Animation2 src={HisPaper} />
+                                ) : (
+                                    <Animation2 src={HisScissors} />
+                                )}
+                            </Container>
+                        </DivContainer>
+                        <br />
+                    </Main>
+                    <Selection>
+                        {this.state.mine === "" ? <div>
+                                <MatchButton onClick={() => this.play("R")}>
+                                    <Img src={Piedra} alt="I play Rock!" />
+                                </MatchButton>
+                                <MatchButton onClick={() => this.play("P")}>
+                                    <Img src={Papel} alt="I play Paper!" />
+                                </MatchButton>
+                                <MatchButton onClick={() => this.play("S")}>
+                                    <Img src={Tijera} alt="I play Scissors!" />
+                                </MatchButton>
+                            </div> : this.state.mine === "R" ? <div>
+                                <ButtonSelection>
+                                    <Img src={rockImg2} alt="I play Rock!" />
+                                </ButtonSelection>
+                                <MatchButton disabled="true">
+                                    <Img src={Papel} alt="I play Paper!" />
+                                </MatchButton>
+                                <MatchButton disabled="true">
+                                    <Img src={Tijera} alt="I play Scissors!" />
+                                </MatchButton>
+                            </div> : this.state.mine === "P" ? <div>
+                                <MatchButton>
+                                    <Img src={Piedra} alt="I play Rock!" />
+                                </MatchButton>
+                                <ButtonSelection disabled="true">
+                                    <Img src={paperImg2} alt="I play Paper!" />
+                                </ButtonSelection>
+                                <MatchButton disabled="true">
+                                    <Img src={Tijera} alt="I play Scissors!" />
+                                </MatchButton>
+                            </div> : <div>
+                                <MatchButton>
+                                    <Img src={Piedra} alt="I play Rock!" />
+                                </MatchButton>
+                                <MatchButton disabled="true">
+                                    <Img src={Papel} alt="I play Paper!" />
+                                </MatchButton>
+                                <ButtonSelection disabled="true">
+                                    <Img src={scissorsImg2} alt="I play Scissors!" />
+                                </ButtonSelection>
+                            </div>}
+                    </Selection>
+                </Div>;
+        }
+        else {
+                 return <Div>
+                         <DivScore>
+                             <Score>
+                                 <Result>
+                                     <Span>Wins</Span>
+                                     <SpanPeer text>
+                                         {
+                                             this.matchRecord.filter(
+                                                 x =>
+                                                     x ===
+                                                     "win"
+                                             ).length
+                                         }
+                                     </SpanPeer>
+                                 </Result>
+                                 <Result>
+                                     <Span>Ties</Span>
+                                     <SpanPeer text>
+                                         {
+                                             this.matchRecord.filter(
+                                                 x =>
+                                                     x ===
+                                                     "tie"
+                                             ).length
+                                         }
+                                     </SpanPeer>
+                                 </Result>
+                                 <Result>
+                                     <Span>Wins</Span>
+                                     <SpanPeer text>
+                                         {
+                                             this.matchRecord.filter(
+                                                 x =>
+                                                     x ===
+                                                     "lose"
+                                             ).length
+                                         }
+                                     </SpanPeer>
+                                 </Result>
+                             </Score>
+                         </DivScore>
+                         <br />
+                         <Main>
+                             <DivContainer>
+                                 <div>
+                                     <H1>YOU</H1>
+                                 </div>
+                                 <br />
+                                 <Container>
+                                     {myChoice === "" ||
+                                     bot === "" ? (
+                                         <Animation
+                                             src={rockImg}
+                                             className="animation"
+                                         />
+                                     ) : myChoice === "R" ? (
+                                         <Animation2
+                                             src={rockImg}
+                                         />
+                                     ) : myChoice === "P" ? (
+                                         <Animation2
+                                             src={paperImg}
+                                         />
+                                     ) : (
+                                         <Animation2
+                                             src={scissorsImg}
+                                         />
+                                     )}
+                                 </Container>
+                                 <br />
+                             </DivContainer>
+                             <DivContainer>
+                                 <div>
+                                     <H1>OPPONENT</H1>
+                                 </div>
+                                 <br />
+                                 <Container>
+                                     {myChoice === "" ||
+                                     bot === "" ? (
+                                         <Animation
+                                             src={HisRock}
+                                             className="animationInvest"
+                                         />
+                                     ) : bot === "R" ? (
+                                         <Animation2
+                                             src={HisRock}
+                                         />
+                                     ) : bot === "P" ? (
+                                         <Animation2
+                                             src={HisPaper}
+                                         />
+                                     ) : (
+                                         <Animation2
+                                             src={HisScissors}
+                                         />
+                                     )}
+                                 </Container>
+                             </DivContainer>
+                             <br />
+                         </Main>
+                         <Selection>
+                             {myChoice === "" ? <div>
+                                     <MatchButton onClick={() => this.play("R")}>
+                                         <Img src={Piedra} alt="I play Rock!" />
+                                     </MatchButton>
+                                     <MatchButton onClick={() => this.play("P")}>
+                                         <Img src={Papel} alt="I play Paper!" />
+                                     </MatchButton>
+                                     <MatchButton onClick={() => this.play("S")}>
+                                         <Img src={Tijera} alt="I play Scissors!" />
+                                     </MatchButton>
+                                 </div> : this.state.mine === "R" ? <div>
+                                     <ButtonSelection>
+                                         <Img src={rockImg2} alt="I play Rock!" />
+                                     </ButtonSelection>
+                                     <MatchButton disabled="true">
+                                         <Img src={Papel} alt="I play Paper!" />
+                                     </MatchButton>
+                                     <MatchButton disabled="true">
+                                         <Img src={Tijera} alt="I play Scissors!" />
+                                     </MatchButton>
+                                 </div> : this.state.mine === "P" ? <div>
+                                     <MatchButton>
+                                         <Img src={Piedra} alt="I play Rock!" />
+                                     </MatchButton>
+                                     <ButtonSelection disabled="true">
+                                         <Img src={paperImg2} alt="I play Paper!" />
+                                     </ButtonSelection>
+                                     <MatchButton disabled="true">
+                                         <Img src={Tijera} alt="I play Scissors!" />
+                                     </MatchButton>
+                                 </div> : <div>
+                                     <MatchButton>
+                                         <Img src={Piedra} alt="I play Rock!" />
+                                     </MatchButton>
+                                     <MatchButton disabled="true">
+                                         <Img src={Papel} alt="I play Paper!" />
+                                     </MatchButton>
+                                     <ButtonSelection disabled="true">
+                                         <Img src={scissorsImg2} alt="I play Scissors!" />
+                                     </ButtonSelection>
+                                 </div>}
+                         </Selection>
+                     </Div>;
+             }
     }
 }
 
