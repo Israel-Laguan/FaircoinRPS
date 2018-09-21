@@ -1,7 +1,7 @@
 
 # RPS - Faircoin
 ### A Rock, Paper and Scissors multiplayer game!
-
+WE WILL CHANGE TO EOS SOON!!!
 Creating a Rock-Paper-Scissors's game shouldn't pose a *problem*, right? **WRONG**
 
 Our team always searching for new code-toys, new skies to fly-bye, started to develop a game using the latest file system on the town, **IPFS**. With **IPFS** the goal is to use a decentralized high-tech network that surely will change the internet as we know it. Using the concepts learned from *bitcoin*, *blockchain*, *cryptocurrencies* world, with core concepts as *merkle-tree*, 
