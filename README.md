@@ -21,8 +21,6 @@
   <p align="center">
     Example Subtitle
     <br />
-	  🖊️
-    <a href="https://">Read the article</a>
     🐞
     <a href="https://github.com/Israel-Laguan/FaircoinRPS/issues">Report a Bug</a>
     🙋‍♂️
